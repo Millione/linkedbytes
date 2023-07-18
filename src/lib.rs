@@ -69,8 +69,26 @@ impl LinkedBytes {
     }
 
     #[inline]
+    pub fn list(&self) -> &VecDeque<Node> {
+        &self.list
+    }
+
+    #[inline]
+    pub fn list_mut(&mut self) -> &mut VecDeque<Node> {
+        &mut self.list
+    }
+
+    #[inline]
     pub fn reserve(&mut self, additional: usize) {
         self.bytes.reserve(additional);
+    }
+
+    pub fn len(&self) -> usize {
+        let mut len = self.bytes.len();
+        for node in self.list.iter() {
+            len += node.as_ref().len();
+        }
+        len
     }
 
     pub fn insert(&mut self, bytes: Bytes) {
